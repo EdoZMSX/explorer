@@ -1,58 +1,58 @@
 // explorer.bin (for all the actions copy move delete files or folders using the clipboard form explorer.exe
-// Name: explorer.bin (expplfile.qpf) rename exe to .bin after compile
+// Name: explorer.bin (explfile.qpf) rename exe to .bin after compile
 // Coder: Edoz
 // Date / Version: 1.2 19-FEB-2025
 // Declare variables
 Var smallIcons:Sheet 				//images
-Var action:Int 						//0-none 1-Delete 2-Copy 3-Move
+Var action:Int 					//0-none 1-Delete 2-Copy 3-Move
 Var actionlabel:String				//String used for the text label for the action above
 Var commandline:String				//String to put commandline parameters into
 Var sourceDIR:String 				//Source directory	from commandline
 Var destinationDIR:String  			//Destination directory from commndline
-Var timercount:Int 					//Timer for anumation
-Var x:Int=24						//screenlocation for animation
-Var y:Int=1							//screenlocation for animation
+Var timercount:Int 				//Timer for anumation
+Var x:Int=24					//screenlocation for animation
+Var y:Int=1					//screenlocation for animation
 Var AnimationOn:Int=1				//animation 1 enabled 0 disabled
-Var FileOrFolderInput(80):String 	//Items sorted 0=sourcedirectory (and action) 1=destination directory all other are files (max)64
-Var FileOrFolderType(80):String		//The type of the obejct, 0=File 1=Directory
-Var i:Int							//Loop for startup getting data from commandline
-Var j:Int							//Loop for startup getting data from commandline
-Var type:Int 						//0=file 1=folder (first character of the commandline parameters, objects are splitted by |
+Var FileOrFolderInput(80):String 		//Items sorted 0=sourcedirectory (and action) 1=destination directory all other are files (max)64
+Var FileOrFolderType(80):String			//The type of the obejct, 0=File 1=Directory
+Var i:Int					//Loop for startup getting data from commandline
+Var j:Int					//Loop for startup getting data from commandline
+Var type:Int 					//0=file 1=folder (first character of the commandline parameters, objects are splitted by |
 Var TotalObjects:Int				//Total file or folder objects for the action
 Var CurrentObject:Int 				//Current file or folder object for the action
-Var NextObject:Int					//Counter to see if there are more objects to process
-Var sourceFile:File					//Source File to process
+Var NextObject:Int				//Counter to see if there are more objects to process
+Var sourceFile:File				//Source File to process
 Var destinationFile:File 			//Destination File to Process
 Var TotalAmount:Long 				//Total amount of memory bytes to copy
-Var amount:Int 						//The amount of memory, in a chunck (2k)
-Var mem:Memory 						//Memory Bank to use for the copy, set at startup, default 2048 but can be larger or smaller
+Var amount:Int 					//The amount of memory, in a chunck (2k)
+Var mem:Memory 					//Memory Bank to use for the copy, set at startup, default 2048 but can be larger or smaller
 Var ProgressAmount:Int 				//The value of the progressbar to caclulate the progress bar value
 Var Tempdata:String 				//To store data in temp
-Var Copying:Int 					//If there is a copy active yes or no (1/0)
-Var Fsource:String 					//Source of the file
+Var Copying:Int 				//If there is a copy active yes or no (1/0)
+Var Fsource:String 				//Source of the file
 Var Fdestination:String 			//Destination of the file
 Var MsgBoxresponse:Int 				//MessageBOX response action  (Yes/NO/Cancel)
 Var FolderCopy:Int=0 				//Is there a copy action busy for a compete folder   (yes/no)
 // for deleting all in folders
 Var StartPath:String 				//Path for starting the deleting of files and folders
 Var deleteAction:Int 				//Is the deleteaction action yes or no
-Var SubDir:String 					//Subdirectroy for deleting
-Var TmpDir:String 					//Store the deleted directroy in tmp
-Var s:Int 							//General counter for the delete folder part
-Var b:Int 							//General counter for the delete folder part
-Var Dir_found:Int 					//Delete the directroy if found
+Var SubDir:String 				//Subdirectroy for deleting
+Var TmpDir:String 				//Store the deleted directroy in tmp
+Var s:Int 					//General counter for the delete folder part
+Var b:Int 					//General counter for the delete folder part
+Var Dir_found:Int 				//Delete the directroy if found
 Var TMPStartpath:String 			//Save the path for deleting folders temp.
 //copyfolder copy part
-Var pathsrc:String 					//Source of the folder to copy 
-Var pathdst:String 					//Deistination of the folder to copy
+Var pathsrc:String 				//Source of the folder to copy 
+Var pathdst:String 				//Deistination of the folder to copy
 Var filepos(20):Int 				//the depth file possition
-Var depth:Int 						//the current depth in the folder
+Var depth:Int 					//the current depth in the folder
 Var entries(255):String 			//The amount of entries (files/folders) in the folder (max. 255)
 Var entriestype(255):Int 			//The type of the entry in the folder (array)
-Var entry:Int 						//The current entry
-Var name:String  					//The current filename
-Var nameType:Int 					//The current type of the entry
-Var parrent:String 					//The parrent path from before
+Var entry:Int 					//The current entry
+Var name:String  				//The current filename
+Var nameType:Int 				//The current type of the entry
+Var parrent:String 				//The parrent path from before
 Var deleteAfterCopy:Int=0 			///Delete all objects after move (yes or no)
 
 Function Form1.Open.Event:Void()
